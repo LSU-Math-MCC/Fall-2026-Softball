@@ -3,6 +3,7 @@
 #This is the beginning of our changes to the code!
 #GOALS: idek tbh
 #PLAN: Change one thing -> Run Program, make "version2b.py", repeat plan.
+#Adding comments helps people see what's going on :) 
 from __future__ import annotations
 
 #import stuff
