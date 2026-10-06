@@ -29,9 +29,14 @@ PITCH_CSV = "Trackman_Database_CLEANED_FINAL.csv"
 
 RUN_VALUE_COL = "xRV of Event (Count Ind)"
 
+#These are outcomes of a pitch being thrown, the call (ball or strike), and the swing (Y/N)
+#These are two of the most significant factors in grading a pitcher
+#Generally the more K's a pitcher gets the better
+#But they should NOT be prioritized when grading a pitch soly based on it's properties (Spin Rate, Speed, etc.)
 EVENT_SOURCE_COL = "PitchCall"
 CSW_EVENTS = ["StrikeCalled", "StrikeSwinging"]
 
+#Featured Columns
 FEATURE_COLS = {
     "RelSpeed": "RelSpeed",
     "RelHeight": "RelHeight",
