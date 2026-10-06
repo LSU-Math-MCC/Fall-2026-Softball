@@ -23,7 +23,8 @@ from sklearn.model_selection import GroupKFold
 
 warnings.simplefilter("ignore", category=FutureWarning)
 
-#Allegedly, this .csv file also goes by the name ~Austin Trackman Data
+#Allegedly, this .csv file also goes by the name ~Austin Trackman Data, 
+#but we do not know for sure if they are the same
 PITCH_CSV = "Trackman_Database_CLEANED_FINAL.csv"
 
 RUN_VALUE_COL = "xRV of Event (Count Ind)"
