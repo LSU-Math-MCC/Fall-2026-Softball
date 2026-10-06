@@ -1,10 +1,17 @@
+#Hello World
+#Hello Future Readers!!!
+#This is the beginning of our changes to the code!
+#GOALS: idek tbh
+#PLAN: Change one thing -> Run Program, make "version2b.py", repeat plan.
 from __future__ import annotations
 
+#import stuff
 import os
 import sys
 import json
 import warnings
 
+#import more stuff
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
@@ -15,6 +22,7 @@ from sklearn.model_selection import GroupKFold
 
 warnings.simplefilter("ignore", category=FutureWarning)
 
+#Allegedly, this .csv file also goes by the name ~Austin Trackman Data
 PITCH_CSV = "Trackman_Database_CLEANED_FINAL.csv"
 
 RUN_VALUE_COL = "xRV of Event (Count Ind)"
