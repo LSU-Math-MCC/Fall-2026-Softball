@@ -241,7 +241,7 @@ def median_best_iter(X, y, folds, is_clf, params):
         iters.append(int(m.best_iteration_ or params["n_estimators"]))
     return int(np.median(iters))
 
-
+#This is what actives when you're trying to get on a train but its full
 def train_full(X, y, n_estimators, is_clf, params):
     Est = lgb.LGBMClassifier if is_clf else lgb.LGBMRegressor
     obj = "binary" if is_clf else "regression"
