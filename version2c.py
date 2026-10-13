@@ -1,6 +1,6 @@
 #VERSION 2C
 #Reason: 2B would not run on anyones computer
-#PLAN: Change one thing -> Run Program, make "version2b.py", repeat plan.
+#PLAN: Change one thing -> Run Program, make "version2___.py", repeat plan.
 #Adding comments helps people see what's going on :) 
 from __future__ import annotations
 
