@@ -77,34 +77,49 @@ INTERACTION_PAIRS = [
 VAA_COL = "VertApprAngle"
 REL_HEIGHT_COL = "RelHeight"
 
-PITCHER_HAND_COL = "PitcherThrows"
-BATTER_HAND_COL = "BatterSide"
-HAND_SIGNED_FEATURES = ["HorzBreak", "RelSide", "HorzApprAngle"]
-PITCHER_ID_COL = "Pitcher"
-PITCH_TYPE_COL = "CorrectedPitchType"
+PITCHER_HAND_COL = "PitcherThrows" #Left or Right
+BATTER_HAND_COL = "BatterSide" #Left or Right
 
-N_SPLITS = 5
-RANDOM_STATE = 42
-SCALE_MEAN = 100.0
-SCALE_SD = 10.0
+# e.g (e.g. arm-side run becomes the same direction for both).
+HAND_SIGNED_FEATURES = ["HorzBreak", "RelSide", "HorzApprAngle"] 
+PITCHER_ID_COL = "Pitcher" # pitcher name / ID Column
+PITCH_TYPE_COL = "CorrectedPitchType" #fastball, slider, etc.
+#Q How are they determining this??
+
+N_SPLITS = 5 # Number of cross-validation folds
+RANDOM_STATE = 42 # Fixed seed so results are repeatable
+SCALE_MEAN = 100.0 # Final grades, 100 being exactly average
+SCALE_SD = 10.0 # 10 points is 1 Standard deviation
+
+# This means that a pitchers pitch type needs to 
+# have been thrown at least 50 times to appear in the leaders board
 MIN_PITCHES_PER_GROUP = 50
+
+# And pitchers need 200 pitch minimum to be considered in Overall leaderboard
+# i.e. If Jane Doe throws 8 pitches, the worlds best curveball in history, then best slider, etc.
+# She will not appear in any boards
+# But her pitches will still have scores ~145.
 MIN_PITCHES_PER_PITCHER = 200
+
+# Rows for each leader board
 TOP_N_PRINT = 10
 
+# Folder where all the results get saved
 OUT_DIR = f"{timestamp}_pitch_grade_output"
 
+# Our settings for the Stuff+ Model
 LGB_PARAMS_RV = {
-    "learning_rate": 0.01,
-    "num_leaves": 63,
-    "min_child_samples": 200,
-    "subsample": 0.8,
-    "subsample_freq": 1,
-    "colsample_bytree": 0.8,
-    "reg_lambda": 1.0,
-    "n_estimators": 3000,
-    "random_state": RANDOM_STATE,
-    "n_jobs": -1,
-    "verbose": -1,
+    "learning_rate": 0.01,    # small steps = slow but careful learning
+    "num_leaves": 63,    # how complex each tree can become
+    "min_child_samples": 200,    # each leaf of tree needs >= 200 pitches
+    "subsample": 0.8,    # each tree sees a random 80% of rows
+    "subsample_freq": 1,    # each tree gets re-picked??
+    "colsample_bytree": 0.8,    # each tree sees a random 80% of features
+    "reg_lambda": 1.0,    # regularization
+    "n_estimators": 3000, # Our MAX number of trees
+    "random_state": RANDOM_STATE, # "Repeatable randomness" whatever that means
+    "n_jobs": -1, #use of all CPU Cores"
+    "verbose": -1,    #No lightGBM Chatter 
 }
 
 LGB_PARAMS_CSW = {
