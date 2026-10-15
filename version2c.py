@@ -48,40 +48,38 @@ FEATURE_COLS = {
     "Extension": "Extension",
     "InducedVertBreak": "InducedVertBreak",
     "HorzBreak": "HorzBreak",
-    "VertBreak": "VertBreak"
-    # "HorzApprAngle": "HorzApprAngle",
+    "HorzApprAngle": "HorzApprAngle",
 }
 
-DELTA_FEATURES = ["HorzBreak", "InducedVertBreak", "RelSpeed", "VertBreak"]
-                #   "VertApprAngle", "HorzApprAngle"]
-
-# INTERACTION_PAIRS = [
-#     ("HorzBreak", "InducedVertBreak"),
-#     ("HorzBreak", "RelSpeed"),
-#     # ("HorzBreak", "VertApprAngle"),
-#     # ("HorzBreak", "HorzApprAngle"),
-#     ("InducedVertBreak", "RelSpeed"),
-#     # ("InducedVertBreak", "VertApprAngle"),
-#     # ("InducedVertBreak", "HorzApprAngle"),
-#     # ("RelSpeed", "VertApprAngle"),
-#     # ("RelSpeed", "HorzApprAngle"),
-#     # ("VertApprAngle", "HorzApprAngle")
-# ]
+DELTA_FEATURES = ["HorzBreak", "InducedVertBreak", "RelSpeed",
+                  "VertApprAngle", "HorzApprAngle"]
 
 INTERACTION_PAIRS = [
-    ("RelSpeed", "InducedVertBreak"),
-    ("InducedVertBreak", "HorzBreak"),
-    ("SpinRate", "InducedVertBreak"),
-    # ("RelSpeed", "VertApprAngle"),
+    ("HorzBreak", "InducedVertBreak"),
+    ("HorzBreak", "RelSpeed"),
+    ("HorzBreak", "VertApprAngle"),
+    ("HorzBreak", "HorzApprAngle"),
+    ("InducedVertBreak", "RelSpeed"),
+    ("InducedVertBreak", "VertApprAngle"),
+    ("InducedVertBreak", "HorzApprAngle"),
+    ("RelSpeed", "VertApprAngle"),
+    ("RelSpeed", "HorzApprAngle"),
+    ("VertApprAngle", "HorzApprAngle")
 ]
 
-# VAA_COL = "VertApprAngle"
+# INTERACTION_PAIRS = [
+#     ("RelSpeed", "InducedVertBreak"),
+#     ("InducedVertBreak", "HorzBreak"),
+#     ("SpinRate", "InducedVertBreak"),
+#     ("RelSpeed", "VertApprAngle"),
+# ]
+
+VAA_COL = "VertApprAngle"
 REL_HEIGHT_COL = "RelHeight"
 
 PITCHER_HAND_COL = "PitcherThrows"
 BATTER_HAND_COL = "BatterSide"
-# HAND_SIGNED_FEATURES = ["HorzBreak", "RelSide", "HorzApprAngle"]
-HAND_SIGNED_FEATURES = ["HorzBreak", "RelSide"]
+HAND_SIGNED_FEATURES = ["HorzBreak", "RelSide", "HorzApprAngle"]
 PITCHER_ID_COL = "Pitcher"
 PITCH_TYPE_COL = "CorrectedPitchType"
 
@@ -139,18 +137,18 @@ def safe_name(s):
     return "".join(c if c.isalnum() else "_" for c in str(s)).strip("_") or "unknown"
 
 
-# def height_adjusted_vaa(df):
-#     if VAA_COL not in df.columns or REL_HEIGHT_COL not in df.columns:
-#         return None
-#     v = pd.to_numeric(df[VAA_COL], errors="coerce")
-#     h = pd.to_numeric(df[REL_HEIGHT_COL], errors="coerce")
-#     mask = v.notna() & h.notna()
-#     if mask.sum() < 100:
-#         return None
-#     slope, intercept = np.polyfit(h[mask].values, v[mask].values, 1)
-#     resid = v - (slope * h + intercept)
-#     info(f"Height-adjusted VAA: slope={slope:.4f} intercept={intercept:.4f}")
-#     return resid
+def height_adjusted_vaa(df):
+    if VAA_COL not in df.columns or REL_HEIGHT_COL not in df.columns:
+        return None
+    v = pd.to_numeric(df[VAA_COL], errors="coerce")
+    h = pd.to_numeric(df[REL_HEIGHT_COL], errors="coerce")
+    mask = v.notna() & h.notna()
+    if mask.sum() < 100:
+        return None
+    slope, intercept = np.polyfit(h[mask].values, v[mask].values, 1)
+    resid = v - (slope * h + intercept)
+    info(f"Height-adjusted VAA: slope={slope:.4f} intercept={intercept:.4f}")
+    return resid
 
 
 def load_and_prepare():
@@ -194,10 +192,10 @@ def load_and_prepare():
 
     new_cols = {}
 
-    # resid = height_adjusted_vaa(df)
-    # if resid is not None:
-    #     new_cols["VertApprAngle_hadj"] = resid.values
-    #     feature_names.append("VertApprAngle_hadj")
+    resid = height_adjusted_vaa(df)
+    if resid is not None:
+        new_cols["VertApprAngle_hadj"] = resid.values
+        feature_names.append("VertApprAngle_hadj")
 
     has_type = PITCH_TYPE_COL in df.columns
     has_pitcher = PITCHER_ID_COL in df.columns
