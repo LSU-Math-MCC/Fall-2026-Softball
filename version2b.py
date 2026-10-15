@@ -36,7 +36,7 @@ RUN_VALUE_COL = "xRV of Event (Count Ind)"
 EVENT_SOURCE_COL = "PitchCall"
 CSW_EVENTS = ["StrikeCalled", "StrikeSwinging"]
 
-#Featured Columns
+#Featured Columns # These are the columns that are used to train the models.
 FEATURE_COLS = {
     "RelSpeed": "RelSpeed",
     "RelHeight": "RelHeight",
