@@ -19,6 +19,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.model_selection import GroupKFold
 
+from datetime import datetime
+
+# 1. Get the current date and time formatted for filenames
+# Example format: 2026-10-13_14-09-00
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
 warnings.simplefilter("ignore", category=FutureWarning)
 
 #Allegedly, this .csv file also goes by the name ~Austin Trackman Data, 
@@ -49,11 +55,24 @@ DELTA_FEATURES = ["HorzBreak", "InducedVertBreak", "RelSpeed",
                   "VertApprAngle", "HorzApprAngle"]
 
 INTERACTION_PAIRS = [
-    ("RelSpeed", "InducedVertBreak"),
-    ("InducedVertBreak", "HorzBreak"),
-    ("SpinRate", "InducedVertBreak"),
+    ("HorzBreak", "InducedVertBreak"),
+    ("HorzBreak", "RelSpeed"),
+    ("HorzBreak", "VertApprAngle"),
+    ("HorzBreak", "HorzApprAngle"),
+    ("InducedVertBreak", "RelSpeed"),
+    ("InducedVertBreak", "VertApprAngle"),
+    ("InducedVertBreak", "HorzApprAngle"),
     ("RelSpeed", "VertApprAngle"),
+    ("RelSpeed", "HorzApprAngle"),
+    ("VertApprAngle", "HorzApprAngle")
 ]
+
+# INTERACTION_PAIRS = [
+#     ("RelSpeed", "InducedVertBreak"),
+#     ("InducedVertBreak", "HorzBreak"),
+#     ("SpinRate", "InducedVertBreak"),
+#     ("RelSpeed", "VertApprAngle"),
+# ]
 
 VAA_COL = "VertApprAngle"
 REL_HEIGHT_COL = "RelHeight"
@@ -72,7 +91,7 @@ MIN_PITCHES_PER_GROUP = 50
 MIN_PITCHES_PER_PITCHER = 200
 TOP_N_PRINT = 10
 
-OUT_DIR = "pitch_grade_output"
+OUT_DIR = f"{timestamp}_pitch_grade_output"
 
 LGB_PARAMS_RV = {
     "learning_rate": 0.01,
