@@ -122,6 +122,9 @@ LGB_PARAMS_RV = {
     "verbose": -1,    #No lightGBM Chatter 
 }
 
+# These are the light gradient boosting parameters for CSW
+# They are currently (from the summer to 10/22/26) the same as the RV parameters
+# Which may be leading to some issues
 LGB_PARAMS_CSW = {
     "learning_rate": 0.01,
     "num_leaves": 63,
@@ -136,6 +139,7 @@ LGB_PARAMS_CSW = {
     "verbose": -1,
 }
 
+# Now begins the list of def statements
 
 def info(msg): print(f"[info] {msg}", flush=True)
 def warn(msg): print(f"[WARN] {msg}", flush=True)
