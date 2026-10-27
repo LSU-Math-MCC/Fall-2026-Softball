@@ -1,5 +1,6 @@
 #VERSION 2C
 #Reason: 2B would not run on anyones computer
+# ANY ONE WHO IS GOING TO CODE AND OR CHANGE CODE, DO IT HERE!!!!!!
 #PLAN: Change one thing -> Run Program, make "version2___.py", repeat plan.
 #Adding comments helps people see what's going on :) 
 from __future__ import annotations
