@@ -269,7 +269,12 @@ def load_and_prepare():
     # This pitch minus the average for that pitcher's most common pitch type
     for f in DELTA_FEATURES:
         if f in df.columns:
-            common_mean = df.groupby([PITCHER_ID_COL, "dominant_pitch_type"])[f].transform("mean")
+            # Use only the pitcher's most-used pitch type to calculate the reference mean
+            dominant_means = df.loc[
+                df[PITCH_TYPE_COL] == df["dominant_pitch_type"]
+            ].groupby(PITCHER_ID_COL)[f].mean()
+            common_mean = df[PITCHER_ID_COL].map(dominant_means)
+            
             new_cols[f"{f}_vs_common_pitch"] = (df[f] - common_mean).values
             feature_names.append(f"{f}_vs_common_pitch")
         else:
