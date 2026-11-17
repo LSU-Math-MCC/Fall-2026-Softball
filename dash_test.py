@@ -454,23 +454,33 @@ def update_leaderboard(min_p, selected, mode):
 
 
 def update_top(metric, n, types_sel, min_p, zoom, selected):
-    # 1) The normal top N
-    pool_g = grades[grades["pitches"] >= (min_p or 0)]
-    if types_sel:
-        pool_g = pool_g[pool_g["CorrectedPitchType"].isin(types_sel)]
-    top_g = pool_g.nlargest(n, metric)
 
-    # 2) Selected pitchers not already in the top N, added at the bottom
-    #    (ignores the min-pitches filter so they always show up)
-    extra = grades[grades["Pitcher"].isin(selected)]
-    if types_sel:
-        extra = extra[extra["CorrectedPitchType"].isin(types_sel)]
-    extra = extra[~extra.index.isin(top_g.index)].sort_values(metric, ascending=False)
+    if selected == None:
 
-    g = pd.concat([top_g, extra]).copy()        # top N first, selected last
-    g["label"] = g["Pitcher"] + " (" + g["CorrectedPitchType"] + ")"
-    g["txt"] = g[metric].map(lambda v: f"{v:.1f}")
-    nice = NICE[metric]
+        # 1) The normal top N
+        pool_g = grades[grades["pitches"] >= (min_p or 0)]
+        if types_sel:
+            pool_g = pool_g[pool_g["CorrectedPitchType"].isin(types_sel)]
+        top_g = pool_g.nlargest(n, metric)
+
+        g = pd.concat([top_g]).copy()        # top N first, selected last
+        g["label"] = g["Pitcher"] + " (" + g["CorrectedPitchType"] + ")"
+        g["txt"] = g[metric].map(lambda v: f"{v:.1f}")
+        nice = NICE[metric]
+
+    else:
+        
+                # 2) Selected pitchers not already in the top N, added at the bottom
+                #    (ignores the min-pitches filter so they always show up)
+                extra = grades[grade["Pitcher"].isin(selected)]
+                if types_sel:
+                    extra = extra[extra["CorrectedPitchType"].isin(types_sel)]
+                extra = extra[~extra.index.isin(top_g.index)].sort_values(metric, ascending=True)
+        
+                g = pd.concat([extra]).copy()        # top N first, selected last
+                g["label"] = g["Pitcher"] + " (" + g["CorrectedPitchType"] + ")"
+                g["txt"] = g[metric].map(lambda v: f"{v:.1f}")
+                nice = NICE[metric]
 
     title = f"Top {len(top_g)} pitcher / pitch types by {nice}"
     if len(extra):
