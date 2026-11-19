@@ -1,4 +1,4 @@
-#VERSION 2D
+#VERSION 2B
 #Reason: Adding a new feature: "vs common pitch" (each pitch minus the average for that pitcher's most common pitch type)
 # ANY ONE WHO IS GOING TO CODE AND OR CHANGE CODE, DO IT HERE!!!!!!
 #PLAN: Change one thing -> Run Program, make "version2___.py", repeat plan.
